@@ -195,14 +195,16 @@ if row_idx is not None:
 
         # Chips de temas (lista visual)
         st.markdown("""
-        <style>
-        .tag {display:inline-block; padding:6px 10px; border-radius:14px;
-              background:#eef2ff; margin:4px 6px 8px 0; border:1px solid #c7d2fe; font-size:14px}
-        </style>
-        """, unsafe_allow_html=True)
-        st.markdown("**Temas realizados:**", unsafe_allow_html=True)
-        st.markdown("".join([f"<span class='tag'>{t}</span>" for t in df_out["Tema"].tolist()]),
-                    unsafe_allow_html=True)
+<style>
+/* Fallbacks parecidos a Univers Condensed */
+html, body, [class*="css"] { 
+  font-family: 'Roboto Condensed','Arial Narrow',Arial,sans-serif;
+}
+h1, h2, h3, .stMetric label {
+  font-weight: 700;
+}
+</style>
+""", unsafe_allow_html=True)
 
         # Tabla Tema–Fecha
         st.dataframe(df_out, use_container_width=True)
