@@ -1,0 +1,7 @@
+[theme]
+base = "light"
+primaryColor = "#009900"              # Verde Pantone 355
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F2F4F8"  # Gris suave
+textColor = "#002B5C"                 # Azul Pantone 289
+font = "sans serif"
