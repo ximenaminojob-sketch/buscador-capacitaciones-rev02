@@ -6,6 +6,61 @@ import unicodedata
 
 # ================== CONFIG ==================
 st.set_page_config(page_title="Reporte de Formación por Persona", page_icon="✅", layout="wide")
+# ---------- THEME TOGGLE (Techint) ----------
+def apply_theme(mode="light"):
+    # Paleta corporativa
+    BRAND_GREEN = "#009900"  # Pantone 355
+    BRAND_NAVY  = "#002B5C"  # Pantone 289
+    BRAND_GRAY  = "#6E6E6E"  # Cool Gray 11
+
+    if mode == "dark":
+        bg   = BRAND_NAVY        # fondo principal
+        bg2  = "#0F2F55"         # paneles/cards
+        text = "#FFFFFF"
+        chip_bg = "#0F3F1F"
+        chip_bd = BRAND_GREEN
+    else:  # light
+        bg   = "#FFFFFF"
+        bg2  = "#F2F4F8"
+        text = BRAND_NAVY
+        chip_bg = "#E9F7EA"
+        chip_bd = BRAND_GREEN
+
+    # Inyecta CSS para colorear la app
+    st.markdown(f"""
+    <style>
+      .stApp {{ background:{bg}; color:{text}; }}
+
+      section[data-testid="stSidebar"] {{
+        background:{bg2};
+      }}
+
+      /* Botones */
+      .stButton > button {{
+        background:{BRAND_GREEN}; color:#fff; border:0; border-radius:10px; padding:0.5rem 1rem;
+      }}
+
+      /* Encabezados de tablas */
+      thead tr th {{
+        background:{bg2} !important; color:{text} !important;
+      }}
+
+      /* Chips para mostrar TEMAS realizados (si los usás) */
+      .tag {{
+        display:inline-block; padding:6px 10px; border-radius:14px;
+        background:{chip_bg}; border:1px solid {chip_bd}; color:{text}; margin:4px 6px 8px 0;
+      }}
+    </style>
+    """, unsafe_allow_html=True)
+
+# Control visible en la UI (colocarlo ANTES de cualquier título/imagen)
+col_modo, _ = st.columns([1, 5])
+with col_modo:
+    oscuro = st.toggle("Modo oscuro", value=False)
+
+# Aplica el modo elegido
+apply_theme("dark" if oscuro else "light")
+# ---------- FIN THEME TOGGLE ----------
 
 BASE_DIR   = Path(__file__).resolve().parent
 XLSX_PATH  = BASE_DIR / "Nómina de Capacitación - QR - REV. 02.xlsx"   # <-- tu archivo real
