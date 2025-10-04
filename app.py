@@ -5,7 +5,7 @@ from pathlib import Path
 import unicodedata
 
 # ================== CONFIG ==================
-st.set_page_config(page_title="Buscador de Capacitaciones", page_icon="✅", layout="wide")
+st.set_page_config(page_title="Reporte de Formación por Persona", page_icon="✅", layout="wide")
 
 BASE_DIR   = Path(__file__).resolve().parent
 XLSX_PATH  = BASE_DIR / "Nómina de Capacitación - QR - REV. 02.xlsx"   # <-- tu archivo real
@@ -96,7 +96,11 @@ temas = (
 )
 
 # ================== HEADER CON LOGO ==================
+from pathlib import Path
+
+BASE_DIR  = Path(__file__).resolve().parent
 logo_path = BASE_DIR / "logo_techint.png"  # agregalo al repo con este nombre
+
 col_logo, col_title = st.columns([1, 6])
 with col_logo:
     if logo_path.exists():
