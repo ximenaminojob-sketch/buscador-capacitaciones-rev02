@@ -99,7 +99,7 @@ temas = (
 from pathlib import Path
 
 BASE_DIR  = Path(__file__).resolve().parent
-logo_path = BASE_DIR / "logo_techint.png"  # agregalo al repo con este nombre
+logo_path = BASE_DIR / "logo_techint.png"
 
 col_logo, col_title = st.columns([1, 6])
 with col_logo:
