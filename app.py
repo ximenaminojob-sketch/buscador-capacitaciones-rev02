@@ -253,41 +253,41 @@ if row_idx is not None:
         if f is not None:
             registros.append({"Tema": h, "Fecha": f.strftime("%d/%m/%Y")})
 
-   # --- MÉTRICAS (solo realizadas) ---
+  # --- MÉTRICAS (solo realizadas) ---
 total_realizadas = len(registros)
 st.metric("Capacitaciones realizadas", total_realizadas)
 
-    st.subheader("✅ Capacitaciones realizadas")
+st.subheader("✅ Capacitaciones realizadas")
 
-    if total_realizadas == 0:
-        st.info("No hay capacitaciones realizadas registradas para esta persona.")
-    else:
-        # Ordeno por fecha DESC y muestro
-        import pandas as pd
-        df_out = pd.DataFrame(registros)
-        df_out["__orden"] = pd.to_datetime(df_out["Fecha"], dayfirst=True, errors="coerce")
-        df_out = df_out.sort_values("__orden", ascending=False).drop(columns="__orden")
-
-        # Chips de temas (lista visual)
-        st.markdown("""
-<style>
-/* Fallbacks parecidos a Univers Condensed */
-html, body, [class*="css"] { 
-  font-family: 'Roboto Condensed','Arial Narrow',Arial,sans-serif;
-}
-h1, h2, h3, .stMetric label {
-  font-weight: 700;
-}
-</style>
-""", unsafe_allow_html=True)
-
-        # Tabla Tema–Fecha
-        st.dataframe(df_out, use_container_width=True)
-
-        # Descargar
-        csv = df_out.to_csv(index=False).encode("utf-8-sig")
-        st.download_button("⬇️ Descargar CSV", data=csv,
-                           file_name=f"capacitaciones_realizadas_{(dni_sel or 'persona')}.csv",
-                           mime="text/csv")
+if total_realizadas == 0:
+    st.info("No hay capacitaciones realizadas registradas para esta persona.")
 else:
-    st.info("Elegí un DNI o un Nombre para comenzar.")
+    # Ordeno por fecha DESC y muestro
+    import pandas as pd
+    df_out = pd.DataFrame(registros)
+    df_out["__orden"] = pd.to_datetime(df_out["Fecha"], dayfirst=True, errors="coerce")
+    df_out = df_out.sort_values("__orden", ascending=False).drop(columns="__orden")
+
+    # Chips de temas (lista visual)
+    st.markdown("""
+    <style>
+    .tag {
+      display:inline-block; padding:6px 10px; border-radius:14px;
+      background:#E9F7EA; border:1px solid #009900; color:#002B5C; margin:4px 6px 8px 0;
+      font-size:14px
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    st.markdown("**Temas realizados:**")
+    st.markdown("".join([f"<span class='tag'>{t}</span>" for t in df_out["Tema"].tolist()]),
+                unsafe_allow_html=True)
+
+    # Tabla Tema–Fecha
+    st.dataframe(df_out, use_container_width=True)
+
+    # Descargar CSV
+    csv = df_out.to_csv(index=False).encode("utf-8-sig")
+    st.download_button("⬇️ Descargar CSV",
+                       data=csv,
+                       file_name=f"capacitaciones_realizadas_{dni_sel or 'persona'}.csv",
+                       mime="text/csv")
