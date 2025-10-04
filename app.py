@@ -106,7 +106,7 @@ with col_logo:
     if logo_path.exists():
         st.image(str(logo_path), width=200)
 with col_title:
-    st.title("Buscador de Capacitaciones (solo realizadas)")
+    st.title("Reporte de Formación por Persona")
 
 st.caption(" Elegí una persona por **DNI** o **Nombre y Apellido**. Se listan solo los temas con **fecha de realización**.")
 
