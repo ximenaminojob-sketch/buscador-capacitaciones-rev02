@@ -6,60 +6,86 @@ import unicodedata
 
 # ================== CONFIG ==================
 st.set_page_config(page_title="Reporte de Formación por Persona", page_icon="✅", layout="wide")
-# ---------- THEME TOGGLE (Techint) ----------
+# ---------- THEME TOGGLE (reemplaza tu apply_theme) ----------
 def apply_theme(mode="light"):
-    # Paleta corporativa
     BRAND_GREEN = "#009900"  # Pantone 355
     BRAND_NAVY  = "#002B5C"  # Pantone 289
-    BRAND_GRAY  = "#6E6E6E"  # Cool Gray 11
+    BRAND_GRAY  = "#6E6E6E"
 
     if mode == "dark":
         bg   = BRAND_NAVY        # fondo principal
         bg2  = "#0F2F55"         # paneles/cards
-        text = "#FFFFFF"
+        text = "#FFFFFF"         # <-- texto claro
         chip_bg = "#0F3F1F"
         chip_bd = BRAND_GREEN
-    else:  # light
+    else:
         bg   = "#FFFFFF"
         bg2  = "#F2F4F8"
         text = BRAND_NAVY
         chip_bg = "#E9F7EA"
         chip_bd = BRAND_GREEN
 
-    # Inyecta CSS para colorear la app
     st.markdown(f"""
     <style>
-      .stApp {{ background:{bg}; color:{text}; }}
+      :root {{
+        --brand-green:{BRAND_GREEN};
+        --brand-navy:{BRAND_NAVY};
+        --brand-gray:{BRAND_GRAY};
+      }}
 
+      /* Contenedor principal + texto por defecto */
+      .stApp, html, body, [data-testid="stAppViewContainer"] {{
+        background:{bg};
+        color:{text};
+      }}
+
+      /* Forzar color de texto claro en modo oscuro para TODO lo común */
+      h1,h2,h3,h4,h5,h6,
+      p, span, div, li, label, small,
+      .stMarkdown, .stText, .stTooltip,
+      [data-testid="stMetric"] *,
+      .st-bb, .st-bc {{  /* elementos de texto internos */
+        color:{text} !important;
+      }}
+
+      /* Sidebar */
       section[data-testid="stSidebar"] {{
         background:{bg2};
+        color:{text};
       }}
 
       /* Botones */
       .stButton > button {{
-        background:{BRAND_GREEN}; color:#fff; border:0; border-radius:10px; padding:0.5rem 1rem;
+        background:{BRAND_GREEN};
+        color:#fff;
+        border:0; border-radius:10px; padding:0.5rem 1rem;
       }}
 
-      /* Encabezados de tablas */
-      thead tr th {{
-        background:{bg2} !important; color:{text} !important;
+      /* Tablas */
+      table, thead tr th, tbody tr td {{
+        color:{text} !important;
+        background:transparent;
+      }}
+      thead tr th {{ background:{bg2} !important; }}
+
+      /* Inputs/textarea */
+      input, textarea {{
+        color:{text} !important;
+        background:{bg2} !important;
+        border-color:#334155 !important;
       }}
 
-      /* Chips para mostrar TEMAS realizados (si los usás) */
+      /* Selectbox/Multiselect (baseweb) */
+      div[data-baseweb="select"] * {{ color:{text} !important; }}
+      div[data-baseweb="select"] > div {{ background:{bg2} !important; }}
+
+      /* Chips de temas (si los usás) */
       .tag {{
         display:inline-block; padding:6px 10px; border-radius:14px;
         background:{chip_bg}; border:1px solid {chip_bd}; color:{text}; margin:4px 6px 8px 0;
       }}
     </style>
     """, unsafe_allow_html=True)
-
-# Control visible en la UI (colocarlo ANTES de cualquier título/imagen)
-col_modo, _ = st.columns([1, 5])
-with col_modo:
-    oscuro = st.toggle("Modo oscuro", value=False)
-
-# Aplica el modo elegido
-apply_theme("dark" if oscuro else "light")
 # ---------- FIN THEME TOGGLE ----------
 
 BASE_DIR   = Path(__file__).resolve().parent
