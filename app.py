@@ -104,7 +104,7 @@ logo_path = BASE_DIR / "logo_techint.png"
 col_logo, col_title = st.columns([1, 6])
 with col_logo:
     if logo_path.exists():
-        st.image(str(logo_path), width=120)
+        st.image(str(logo_path), width=200)
 with col_title:
     st.title("Buscador de Capacitaciones (solo realizadas)")
 
