@@ -253,15 +253,9 @@ if row_idx is not None:
         if f is not None:
             registros.append({"Tema": h, "Fecha": f.strftime("%d/%m/%Y")})
 
-    # --- Métricas ---
-    total_realizadas = len(registros)
-    total_temarios   = len(temas)
-    c1, c2, c3 = st.columns(3)
-    with c1: st.metric("Capacitaciones realizadas", total_realizadas)
-    with c2: st.metric("Total de temas", total_temarios)
-    with c3:
-        pct = 0 if total_temarios == 0 else round(100*total_realizadas/total_temarios, 1)
-        st.metric("% de avance", f"{pct}%")
+   # --- MÉTRICAS (solo realizadas) ---
+total_realizadas = len(registros)
+st.metric("Capacitaciones realizadas", total_realizadas)
 
     st.subheader("✅ Capacitaciones realizadas")
 
