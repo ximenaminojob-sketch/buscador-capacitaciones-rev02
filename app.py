@@ -143,18 +143,70 @@ else:  # Buscar por nombre
                 dni_sel = str(df.iat[row_idx, COL_DNI])
 
 # ================== DATOS DE LA PERSONA + LISTA REALIZADAS ==================
+# ================== DATOS DE LA PERSONA + LISTA REALIZADAS ==================
 if row_idx is not None:
-    # Datos de cabecera
+    # --- Datos de cabecera ---
     nombre = str(df.iat[row_idx, COL_NOMBRE]) if COL_NOMBRE is not None else "-"
     puesto = str(df.iat[row_idx, COL_PUESTO]) if COL_PUESTO is not None else "-"
     espec  = str(df.iat[row_idx, COL_ESPECIALIDAD]) if COL_ESPECIALIDAD is not None else "-"
 
-    cA, cB, cC, cD = st.columns([2, 2, 2, 2])
-    with cA: st.write("**DNI**");         st.write(dni_sel or "-")
+    cA, cB, cC, cD = st.columns([2, 3, 2, 2])
+    with cA: st.write("**DNI**");               st.write(dni_sel or "-")
     with cB: st.write("**Nombre y Apellido**"); st.write(nombre)
-    with cC: st.write("**Puesto**");      st.write(puesto)
-    with cD: st.write("**Especialidad**");st.write(espec)
+    with cC: st.write("**Puesto**");            st.write(puesto)
+    with cD: st.write("**Especialidad**");      st.write(espec)
 
     st.divider()
 
-    # Valores de
+    # --- Construyo 'registros' (solo si hay FECHA) ---
+    valores = df.iloc[row_idx, COL_START:COL_END+1].tolist()
+    registros = []
+    for h, v in zip(temas, valores):
+        if not h:
+            continue
+        f = parse_fecha(v)            # usa tu helper; devuelve date o None
+        if f is not None:
+            registros.append({"Tema": h, "Fecha": f.strftime("%d/%m/%Y")})
+
+    # --- Métricas ---
+    total_realizadas = len(registros)
+    total_temarios   = len(temas)
+    c1, c2, c3 = st.columns(3)
+    with c1: st.metric("Capacitaciones realizadas", total_realizadas)
+    with c2: st.metric("Total de temas", total_temarios)
+    with c3:
+        pct = 0 if total_temarios == 0 else round(100*total_realizadas/total_temarios, 1)
+        st.metric("% de avance", f"{pct}%")
+
+    st.subheader("✅ Capacitaciones realizadas")
+
+    if total_realizadas == 0:
+        st.info("No hay capacitaciones realizadas registradas para esta persona.")
+    else:
+        # Ordeno por fecha DESC y muestro
+        import pandas as pd
+        df_out = pd.DataFrame(registros)
+        df_out["__orden"] = pd.to_datetime(df_out["Fecha"], dayfirst=True, errors="coerce")
+        df_out = df_out.sort_values("__orden", ascending=False).drop(columns="__orden")
+
+        # Chips de temas (lista visual)
+        st.markdown("""
+        <style>
+        .tag {display:inline-block; padding:6px 10px; border-radius:14px;
+              background:#eef2ff; margin:4px 6px 8px 0; border:1px solid #c7d2fe; font-size:14px}
+        </style>
+        """, unsafe_allow_html=True)
+        st.markdown("**Temas realizados:**", unsafe_allow_html=True)
+        st.markdown("".join([f"<span class='tag'>{t}</span>" for t in df_out["Tema"].tolist()]),
+                    unsafe_allow_html=True)
+
+        # Tabla Tema–Fecha
+        st.dataframe(df_out, use_container_width=True)
+
+        # Descargar
+        csv = df_out.to_csv(index=False).encode("utf-8-sig")
+        st.download_button("⬇️ Descargar CSV", data=csv,
+                           file_name=f"capacitaciones_realizadas_{(dni_sel or 'persona')}.csv",
+                           mime="text/csv")
+else:
+    st.info("Elegí un DNI o un Nombre para comenzar.")
