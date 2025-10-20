@@ -3,6 +3,7 @@ import streamlit as st
 from datetime import datetime, date
 from pathlib import Path
 import unicodedata
+import hashlib  
 
 # ================== CONFIG ==================
 st.set_page_config(page_title="Reporte de Formación por Persona", page_icon="✅", layout="wide")
@@ -115,10 +116,19 @@ def find_col_by_keywords(headers_row, keywords):
                     return idx
     return None
 
-@st.cache_data
-def load_data(xlsx_path: Path, sheet_name: str):
-    df = pd.read_excel(xlsx_path, sheet_name=sheet_name, header=None, engine="openpyxl")
-    return df
+def _file_version(path) -> str:
+    """
+    Devuelve un hash corto del archivo para invalidar cache cuando el Excel cambia.
+    """
+    h = hashlib.md5()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            h.update(chunk)
+    return h.hexdigest()[:12]
+    
+@st.cache_data(ttl=300)
+df = load_data(XLSX_PATH, SHEET_NAME, _file_version(XLSX_PATH))
+    return pd.read_excel(xlsx_path, sheet_name=sheet_name, header=None, engine="openpyxl")
 
 def excel_serial_to_datetime(val):
     try:
@@ -146,7 +156,7 @@ if not XLSX_PATH.exists():
     st.error(f"No se encontró el Excel: {XLSX_PATH.name}")
     st.stop()
 
-df = load_data(XLSX_PATH, SHEET_NAME)
+df = (XLSX_PATH, SHEET_NAME)
 
 # Detecto última columna de temas (COL_END)
 headers_row = df.iloc[ROW_HEADER, :].tolist()
