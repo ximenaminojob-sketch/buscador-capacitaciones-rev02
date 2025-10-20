@@ -175,9 +175,9 @@ logo_path = BASE_DIR / "logo_techint.png"
 col_logo, col_title = st.columns([2, 6])
 with col_logo:
     if logo_path.exists():
-        st.image(str(logo_path), width=200)
+        st.image(str(logo_path), width=250)
 with col_title:
-    st.title("Buscador de Capacitaciones (solo realizadas)")
+    st.title("Reporte de Formación de Personal")
 st.caption("Elegí una persona por **DNI** o **Nombre y Apellido**. Se listan solo los temas con **fecha de realización**.")
 
 # ================== CONTROLES DE BÚSQUEDA ==================
