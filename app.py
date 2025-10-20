@@ -127,7 +127,7 @@ def _file_version(path) -> str:
     return h.hexdigest()[:12]
     
 @st.cache_data(ttl=300)
-df = load_data(XLSX_PATH, SHEET_NAME, _file_version(XLSX_PATH))
+def load_data(xlsx_path, sheet_name, _ver):
     return pd.read_excel(
         xlsx_path,
         sheet_name=sheet_name,
