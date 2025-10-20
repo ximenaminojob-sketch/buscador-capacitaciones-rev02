@@ -34,34 +34,40 @@ def apply_theme(mode="light"):
         chip_bg, chip_bd = "#E9F7EA", BRAND_GREEN
 
     st.markdown(f"""
-    <style>
-      .stApp, html, body, [data-testid="stAppViewContainer"] {{
-        background:{bg}; color:{text};
-      }}
-      h1,h2,h3,h4,h5,h6, p, span, div, li, label, small,
-      .stMarkdown, .stText, .stTooltip, [data-testid="stMetric"] *,
-      .st-bb, .st-bc {{ color:{text} !important; }}
+<style>
+  /* --- SELECTBOX / MULTISELECT (BaseWeb) --- */
+  /* Caja del control (cerrado) */
+  div[data-baseweb="select"] > div {{
+    background:{bg2} !important;
+    color:{text} !important;
+    border-color: #334155 !important;
+  }}
+  /* Texto/ícono dentro del control */
+  div[data-baseweb="select"] * {{
+    color:{text} !important;
+    fill:{text} !important;
+  }}
 
-      section[data-testid="stSidebar"] {{ background:{bg2}; color:{text}; }}
-
-      .stButton > button {{
-        background:{BRAND_GREEN}; color:#fff; border:0; border-radius:10px; padding:.5rem 1rem;
-      }}
-
-      table, thead tr th, tbody tr td {{ color:{text} !important; background:transparent; }}
-      thead tr th {{ background:{bg2} !important; }}
-
-      input, textarea {{ color:{text} !important; background:{bg2} !important; border-color:#334155 !important; }}
-      div[data-baseweb="select"] * {{ color:{text} !important; }}
-      div[data-baseweb="select"] > div {{ background:{bg2} !important; }}
-
-      .tag {{
-        display:inline-block; padding:6px 10px; border-radius:14px;
-        background:{chip_bg}; border:1px solid {chip_bd}; color:{text}; margin:4px 6px 8px 0; font-size:14px
-      }}
-    </style>
-    """, unsafe_allow_html=True)
-
+  /* Popover del menú desplegable */
+  div[data-baseweb="popover"] {{
+    background:{bg2} !important;
+    color:{text} !important;
+  }}
+  /* Lista de opciones */
+  div[data-baseweb="popover"] [role="listbox"] {{
+    background:{bg2} !important;
+  }}
+  /* Cada opción */
+  div[data-baseweb="popover"] [role="option"] {{
+    color:{text} !important;
+  }}
+  /* Hover de opción (ligero contraste) */
+  div[data-baseweb="popover"] [role="option"]:hover {{
+    background: rgba(255,255,255,0.12) !important;  /* en oscuro */
+  }}
+</style>
+""", unsafe_allow_html=True)
+    
 col_modo, _ = st.columns([1, 5])
 with col_modo:
     oscuro = st.toggle("Modo oscuro", value=False)
