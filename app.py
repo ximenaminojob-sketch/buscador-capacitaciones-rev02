@@ -89,7 +89,7 @@ def apply_theme(mode="light"):
 # ---------- FIN THEME TOGGLE ----------
 
 BASE_DIR   = Path(__file__).resolve().parent
-XLSX_PATH  = BASE_DIR / "Nómina de Capacitación - QR - REV. 02.xlsx"   # <-- tu archivo real
+XLSX_PATH  = BASE_DIR / "NÓMINA CAPACITACION LT2E TECHINT-SAS.xlsx"   # <-- tu archivo real
 SHEET_NAME = "TECHINT"
 
 # Estructura base (0-based). Si cambia, ajustá acá:
