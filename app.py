@@ -51,51 +51,71 @@ def apply_theme(mode="light"):
         CHIP_BG = "#E9F7EA"
         CHIP_BD = GREEN
 
-st.markdown(f"""
-<style>
-  /* === SELECTBOX / MULTISELECT (BaseWeb) – forzar dark === */
-  /* Caja cerrada */
-  div[data-baseweb="select"] > div {{
-    background:{BG2} !important;
-    color:{TEXT} !important;
-    border-color:{BORDER} !important;
-  }}
-  div[data-baseweb="select"] input,
-  div[data-baseweb="select"] * {{
-    color:{TEXT} !important;
-    fill:{TEXT} !important;
-  }}
+    st.markdown(f"""
+    <style>
+      /* Base */
+      .stApp, html, body, [data-testid="stAppViewContainer"] {{
+        background:{BG} !important; color:{TEXT} !important;
+      }}
+      p,span,div,li,label,small,code,pre,
+      h1,h2,h3,h4,h5,h6,
+      .stMarkdown, .stText, .stTooltip, [data-testid="stMetric"] * {{
+        color:{TEXT} !important;
+      }}
+      a, a:visited {{ color:{LINK} !important; }}
 
-  /* El POPUP se monta fuera del árbol (portal) */
-  [data-baseweb="layer"], /* contenedor del portal */
-  [data-baseweb="popover"] {{
-    background:{BG2} !important;
-    color:{TEXT} !important;
-    border:1px solid {BORDER} !important;
-  }}
+      /* Contenedores secundarios / cards */
+      [data-testid="stSidebar"], .stTabs, .stAlert, .css-12w0qpk, .css-uvzsq5 {{
+        background:{BG2} !important; color:{TEXT} !important;
+      }}
 
-  /* Lista y opciones */
-  [data-baseweb="popover"] [role="listbox"] {{
-    background:{BG2} !important;
-    color:{TEXT} !important;
-  }}
-  [data-baseweb="popover"] [role="option"],
-  [data-baseweb="popover"] [role="option"] * {{
-    background:{BG2} !important;
-    color:{TEXT} !important;
-  }}
-  /* Hover / seleccionada */
-  [data-baseweb="popover"] [role="option"]:hover,
-  [data-baseweb="popover"] [role="option"][aria-selected="true"] {{
-    background:{HOVER} !important;
-    color:{TEXT} !important;
-  }}
+      /* Inputs, textareas, sliders */
+      input, textarea {{ background:{BG2} !important; color:{TEXT} !important; border-color:{BORDER} !important; }}
+      .stSlider > div > div > div > div {{ background:{GREEN} !important; }}
 
-  /* Scrollbar del popup */
-  [data-baseweb="popover"] ::-webkit-scrollbar-thumb {{ background:{BORDER}; }}
-  [data-baseweb="popover"] ::-webkit-scrollbar-track {{ background:transparent; }}
-</style>
-""", unsafe_allow_html=True)
+      /* Botones */
+      .stButton > button {{
+        background:{GREEN} !important; color:#fff !important;
+        border:0 !important; border-radius:10px !important; padding:.5rem 1rem !important;
+        box-shadow:none !important;
+      }}
+      .stDownloadButton > button {{ background:{GREEN} !important; color:#fff !important; }}
+
+      /* Radio/checkbox */
+      div[role="radiogroup"] label span, label[for*="checkbox"] span {{ color:{TEXT} !important; }}
+
+      /* Selectbox/Multiselect (BaseWeb) */
+      div[data-baseweb="select"] > div {{
+        background:{BG2} !important; color:{TEXT} !important; border-color:{BORDER} !important;
+      }}
+      div[data-baseweb="select"] * {{ color:{TEXT} !important; fill:{TEXT} !important; }}
+      div[data-baseweb="popover"] {{ background:{BG2} !important; color:{TEXT} !important; border:1px solid {BORDER} !important; }}
+      div[data-baseweb="popover"] [role="listbox"] {{ background:{BG2} !important; }}
+      div[data-baseweb="popover"] [role="option"] {{ color:{TEXT} !important; }}
+      div[data-baseweb="popover"] [role="option"]:hover {{ background:{HOVER} !important; }}
+
+      /* Tablas */
+      table {{ border-color:{BORDER} !important; }}
+      thead tr th {{ background:{BG2} !important; color:{TEXT} !important; border-bottom:1px solid {BORDER} !important; }}
+      tbody tr:nth-child(odd) td {{ background:{TABLEZ} !important; }}
+      tbody tr:hover td {{ background:{HOVER} !important; }}
+
+      /* Separadores / líneas */
+      hr, [role="separator"] {{ border-color:{BORDER} !important; }}
+
+      /* Chips (temas realizados) */
+      .tag {{
+        display:inline-block; padding:6px 10px; border-radius:14px;
+        background:{CHIP_BG}; border:1px solid {CHIP_BD}; color:{TEXT};
+        margin:4px 6px 8px 0; font-size:14px
+      }}
+
+      /* Scrollbar (sutil) */
+      ::-webkit-scrollbar {{ height:12px; width:12px; }}
+      ::-webkit-scrollbar-thumb {{ background:{BORDER}; border-radius:10px; }}
+      ::-webkit-scrollbar-track {{ background:transparent; }}
+    </style>
+    """, unsafe_allow_html=True)
     
 col_modo, _ = st.columns([1, 5])
 with col_modo:
