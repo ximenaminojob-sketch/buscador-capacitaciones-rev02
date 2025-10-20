@@ -22,51 +22,101 @@ COL_START  = 6   # columna G (primer tema)
 
 # ================== THEME (toggle claro/oscuro con paleta Techint) ==================
 def apply_theme(mode="light"):
-    BRAND_GREEN = "#009900"   # Pantone 355
-    BRAND_NAVY  = "#002B5C"   # Pantone 289
-    BRAND_GRAY  = "#6E6E6E"   # Cool Gray 11
+    # Paleta Techint
+    GREEN = "#009900"   # Pantone 355
+    NAVY  = "#002B5C"   # Pantone 289
+    GRAY  = "#6E6E6E"
 
+    # ----- Paletas completamente invertidas -----
     if mode == "dark":
-        bg, bg2, text = BRAND_NAVY, "#0F2F55", "#FFFFFF"
-        chip_bg, chip_bd = "#0F3F1F", BRAND_GREEN
+        BG      = NAVY          # fondo principal
+        BG2     = "#0F2F55"     # paneles/cards/inputs
+        TEXT    = "#FFFFFF"      # texto
+        MUTED   = "rgba(255,255,255,.65)"
+        BORDER  = "#1f3a64"
+        HOVER   = "rgba(255,255,255,.12)"
+        TABLEZ  = "rgba(255,255,255,.03)"   # zebra
+        LINK    = "#7ec8ff"
+        CHIP_BG = "#0F3F1F"
+        CHIP_BD = GREEN
     else:
-        bg, bg2, text = "#FFFFFF", "#F2F4F8", BRAND_NAVY
-        chip_bg, chip_bd = "#E9F7EA", BRAND_GREEN
+        BG      = "#FFFFFF"
+        BG2     = "#F2F4F8"
+        TEXT    = NAVY
+        MUTED   = "#5b6b7c"
+        BORDER  = "#d5dde7"
+        HOVER   = "rgba(0,0,0,.06)"
+        TABLEZ  = "#fafcff"
+        LINK    = "#0b6bbf"
+        CHIP_BG = "#E9F7EA"
+        CHIP_BD = GREEN
 
     st.markdown(f"""
-<style>
-  /* --- SELECTBOX / MULTISELECT (BaseWeb) --- */
-  /* Caja del control (cerrado) */
-  div[data-baseweb="select"] > div {{
-    background:{bg2} !important;
-    color:{text} !important;
-    border-color: #334155 !important;
-  }}
-  /* Texto/ícono dentro del control */
-  div[data-baseweb="select"] * {{
-    color:{text} !important;
-    fill:{text} !important;
-  }}
+    <style>
+      /* Base */
+      .stApp, html, body, [data-testid="stAppViewContainer"] {{
+        background:{BG} !important; color:{TEXT} !important;
+      }}
+      p,span,div,li,label,small,code,pre,
+      h1,h2,h3,h4,h5,h6,
+      .stMarkdown, .stText, .stTooltip, [data-testid="stMetric"] * {{
+        color:{TEXT} !important;
+      }}
+      a, a:visited {{ color:{LINK} !important; }}
 
-  /* Popover del menú desplegable */
-  div[data-baseweb="popover"] {{
-    background:{bg2} !important;
-    color:{text} !important;
-  }}
-  /* Lista de opciones */
-  div[data-baseweb="popover"] [role="listbox"] {{
-    background:{bg2} !important;
-  }}
-  /* Cada opción */
-  div[data-baseweb="popover"] [role="option"] {{
-    color:{text} !important;
-  }}
-  /* Hover de opción (ligero contraste) */
-  div[data-baseweb="popover"] [role="option"]:hover {{
-    background: rgba(255,255,255,0.12) !important;  /* en oscuro */
-  }}
-</style>
-""", unsafe_allow_html=True)
+      /* Contenedores secundarios / cards */
+      [data-testid="stSidebar"], .stTabs, .stAlert, .css-12w0qpk, .css-uvzsq5 {{
+        background:{BG2} !important; color:{TEXT} !important;
+      }}
+
+      /* Inputs, textareas, sliders */
+      input, textarea {{ background:{BG2} !important; color:{TEXT} !important; border-color:{BORDER} !important; }}
+      .stSlider > div > div > div > div {{ background:{GREEN} !important; }}
+
+      /* Botones */
+      .stButton > button {{
+        background:{GREEN} !important; color:#fff !important;
+        border:0 !important; border-radius:10px !important; padding:.5rem 1rem !important;
+        box-shadow:none !important;
+      }}
+      .stDownloadButton > button {{ background:{GREEN} !important; color:#fff !important; }}
+
+      /* Radio/checkbox */
+      div[role="radiogroup"] label span, label[for*="checkbox"] span {{ color:{TEXT} !important; }}
+
+      /* Selectbox/Multiselect (BaseWeb) */
+      div[data-baseweb="select"] > div {{
+        background:{BG2} !important; color:{TEXT} !important; border-color:{BORDER} !important;
+      }}
+      div[data-baseweb="select"] * {{ color:{TEXT} !important; fill:{TEXT} !important; }}
+      div[data-baseweb="popover"] {{ background:{BG2} !important; color:{TEXT} !important; border:1px solid {BORDER} !important; }}
+      div[data-baseweb="popover"] [role="listbox"] {{ background:{BG2} !important; }}
+      div[data-baseweb="popover"] [role="option"] {{ color:{TEXT} !important; }}
+      div[data-baseweb="popover"] [role="option"]:hover {{ background:{HOVER} !important; }}
+
+      /* Tablas */
+      table {{ border-color:{BORDER} !important; }}
+      thead tr th {{ background:{BG2} !important; color:{TEXT} !important; border-bottom:1px solid {BORDER} !important; }}
+      tbody tr:nth-child(odd) td {{ background:{TABLEZ} !important; }}
+      tbody tr:hover td {{ background:{HOVER} !important; }}
+
+      /* Separadores / líneas */
+      hr, [role="separator"] {{ border-color:{BORDER} !important; }}
+
+      /* Chips (temas realizados) */
+      .tag {{
+        display:inline-block; padding:6px 10px; border-radius:14px;
+        background:{CHIP_BG}; border:1px solid {CHIP_BD}; color:{TEXT};
+        margin:4px 6px 8px 0; font-size:14px
+      }}
+
+      /* Scrollbar (sutil) */
+      ::-webkit-scrollbar {{ height:12px; width:12px; }}
+      ::-webkit-scrollbar-thumb {{ background:{BORDER}; border-radius:10px; }}
+      ::-webkit-scrollbar-track {{ background:transparent; }}
+    </style>
+    """, unsafe_allow_html=True)
+
     
 col_modo, _ = st.columns([1, 5])
 with col_modo:
