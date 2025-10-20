@@ -130,12 +130,11 @@ if df is None or not hasattr(df, "iloc"):
     st.stop()
 
 # Botón para refrescar manualmente
-col_refresh, _ = st.columns([1,5])
+col_refresh, _ = st.columns([1, 5])
 with col_refresh:
     if st.button("🔁 Actualizar datos"):
         load_data.clear()
-        st.experimental_rerun()
-
+        st.rerun()
 # Detecto última columna de temas (desde G hacia la derecha)
 headers_row = df.iloc[ROW_HEADER, :].tolist()
 last_col = COL_START
