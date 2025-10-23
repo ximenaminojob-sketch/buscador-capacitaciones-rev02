@@ -232,7 +232,7 @@ with col_logo:
     if logo_path.exists():
         st.image(str(logo_path), width=250)
 with col_title:
-    st.title("Reporte de Formación de Personal")
+    st.title("Seguimiento de Competencias")
 st.caption("Elegí una persona por **DNI** o **Nombre y Apellido**. Se listan solo los temas con **fecha de realización**.")
 
 # ================== CONTROLES DE BÚSQUEDA ==================
