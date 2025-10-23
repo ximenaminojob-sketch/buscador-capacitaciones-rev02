@@ -1,4 +1,4 @@
-# reporte de Formación — REV.02
+# Reporte de Formación — REV.02
 
 Lee **Nómina de Capacitación - QR - REV. 02.xlsx** (hoja `TECHINT`) y muestra por **DNI** solo las **capacitaciones realizadas** (con **fecha**).
 
