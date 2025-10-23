@@ -8,7 +8,7 @@ import pandas as pd
 import streamlit as st
 
 # ================== CONFIG BÁSICA ==================
-st.set_page_config(page_title="Buscador de Capacitaciones", page_icon="✅", layout="wide")
+st.set_page_config(page_title="Reporte de Formación", page_icon="✅", layout="wide")
 
 BASE_DIR   = Path(__file__).resolve().parent
 XLSX_PATH  = BASE_DIR / "Nómina de Capacitación - QR - REV. 02.xlsx"
